@@ -17,6 +17,7 @@
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.24.0",
     "typed.js": "^2.1.0",
+    "vanilla-routing": "^0.0.4",
     "vendors": "^2.0.1"
   },
   "devDependencies": {
