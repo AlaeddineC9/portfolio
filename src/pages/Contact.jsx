@@ -1,54 +1,86 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Nav from '../components/Navbar';
 
-const Contact = () => {
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        subject: '',
-        message: ''
-    });
-    const [errors, setErrors] = useState({});
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value
-        });
-    };
-    const validate = () => {
-        let tempErrors = {};
-        const nameRegex = /^[a-zA-ZÀ-ÿ '-]+$/;
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        if (!formData.name || !nameRegex.test(formData.name)) {
-            tempErrors.name = 'Nom et Prénom invalide.';
-        }
-        if (!formData.email || !emailRegex.test(formData.email)) {
-            tempErrors.email = 'Email invalide.';
-        }
-        if (!formData.subject) {
-            tempErrors.subject = 'Le sujet est requis.';
-        }
-        if (!formData.message) {
-            tempErrors.message = 'Le message est requis.';
-        }
-        setErrors(tempErrors);
-        return Object.keys(tempErrors).length === 0;
-    };
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (validate()) {
-            console.log('Form Data Submitted: ', formData);
-            alert('Votre message a été envoyé avec succès.');
-            setFormData({
-                name: '',
-                email: '',
-                subject: '',
-                message: ''
-            });
-        }
-    };
+const Contact = () => {
+const [email, setEmail] = useState("");
+const [message, setMessage] = useState("");
+const [errors, setErrors] = useState({});
+const [touchedEmail, setTouchedEmail] = useState(false);
+const [touchedMessage, setTouchedMessage] = useState(false);
+
+useEffect(() => {
+    if (touchedEmail) {
+    validateEmail();
+    }
+}, [email, touchedEmail]);
+
+useEffect(() => {
+    if (touchedMessage) {
+    validateMessage();
+    }
+}, [message, touchedMessage]);
+
+const validateEmail = () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email) {
+    setErrors((prevErrors) => ({ ...prevErrors, email: "L'adresse mail est obligatoire." }));
+    } else if (!emailRegex.test(email)) {
+    setErrors((prevErrors) => ({ ...prevErrors, email: "L'adresse mail ne respecte pas le format attendu." }));
+    } else {
+    setErrors((prevErrors) => {
+        const { email, ...rest } = prevErrors;
+        return rest;
+    });
+    }
+};
+const validateMessage = () => {
+    if (!message) {
+    setErrors((prevErrors) => ({ ...prevErrors, message: "Le message est obligatoire." }));
+    } else if (message.length < 10) {
+    setErrors((prevErrors) => ({ ...prevErrors, message: "Le message est trop court." }));
+    } else {
+    setErrors((prevErrors) => {
+        const { message, ...rest } = prevErrors;
+        return rest;
+    });
+    }
+};
+
+const handleSubmit = (event) => {
+    event.preventDefault();
+    const formErrors = validateForm();
+    if (Object.keys(formErrors).length === 0) {
+    alert("Votre message a été envoyé !");
+      // Réinitialiser le formulaire après soumission
+    setEmail("");
+    setMessage("");
+    setTouchedEmail(false);
+    setTouchedMessage(false);
+    setErrors({});
+    } else {
+    setErrors(formErrors);
+    }
+};
+
+const validateForm = () => {
+    const newErrors = {};
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!email) {
+    newErrors.email = "L'adresse mail est obligatoire.";
+    } else if (!emailRegex.test(email)) {
+    newErrors.email = "L'adresse mail ne respecte pas le format attendu.";
+    }
+
+    if (!message) {
+    newErrors.message = "Le message est obligatoire.";
+    } else if (message.length < 10) {
+    newErrors.message = "Le message est trop court.";
+    }
+
+    return newErrors;
+};
 
     return (
         <>
@@ -79,55 +111,33 @@ const Contact = () => {
                             </div>
                         </div>
                         <div className="mt-5 col-lg-8 mt-lg-0">
-                            <div className="max-w-md p-6 bg-white rounded-md shadow-md ">
+                            <div className="max-w-md p-6 bg-white rounded-md shadow-md">
                                 <form onSubmit={handleSubmit} className="php-email-form">
+                                
                                     <div className="mt-3 form-group">
-                                        <input
-                                            type="text"
-                                            id="name"
-                                            name="name"
-                                            value={formData.name}
-                                            onChange={handleChange}
-                                            placeholder="Nom complet"
-                                            className="form-control"
-                                        />
-                                        {errors.name && <p className="mt-1 text-sm text-red-500">{errors.name}</p>}
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        className="form-control"
+                                        placeholder="Email"
+                                        value={email}
+                                        onFocus={() => setTouchedEmail(true)}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                />
+                                                    {errors.email && <p className="error">{errors.email}</p>}
                                     </div>
+                                
                                     <div className="mt-3 form-group">
-                                        <input
-                                            type="email"
-                                            id="email"
-                                            name="email"
-                                            value={formData.email}
-                                            onChange={handleChange}
-                                            className="form-control"
-                                            placeholder="Email"
-                                        />
-                                        {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email}</p>}
-                                    </div>
-                                    <div className="mt-3 form-group">
-                                        <input
-                                            type="text"
-                                            id="subject"
-                                            name="subject"
-                                            value={formData.subject}
-                                            onChange={handleChange}
-                                            className="form-control"
-                                            placeholder="Sujet"
-                                        />
-                                        {errors.subject && <p className="mt-1 text-sm text-red-500">{errors.subject}</p>}
-                                    </div>
-                                    <div className="mt-3 form-group">
-                                        <textarea
-                                            id="message"
-                                            name="message"
-                                            value={formData.message}
-                                            onChange={handleChange}
-                                            rows="4"
-                                            placeholder="Message"
-                                            className="form-control"
-                                        ></textarea>
-                                        {errors.message && <p className="mt-1 text-sm text-red-500">{errors.message}</p>}
+                                    <textarea
+                                                id="message"
+                                                placeholder="Message"
+                                                className="form-control"
+                                                value={message}
+                                                onFocus={() => setTouchedMessage(true)}
+                                                onChange={(e) => setMessage(e.target.value)}
+                                    ></textarea>
+                                                    {errors.message && <p className="error">{errors.message}</p>}
+                                        
                                     </div>
                                     <div className="text-center">
                                         <button type="submit">
