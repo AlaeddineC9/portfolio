@@ -58,7 +58,7 @@ const Contact = () => {
                     <div className="section-title">
                         <h2>Contact</h2>
                     </div>
-                    <div className="row mt-1">
+                    <div className="mt-1 row">
                         <div className="col-lg-4">
                             <div className="info">
                                 <div className="address">
@@ -78,10 +78,10 @@ const Contact = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-lg-8 mt-5 mt-lg-0">
-                            <div className="max-w-md mx-auto bg-white shadow-md rounded-md p-6 mt-10">
+                        <div className="mt-5 col-lg-8 mt-lg-0">
+                            <div className="max-w-md p-6 bg-white rounded-md shadow-md ">
                                 <form onSubmit={handleSubmit} className="php-email-form">
-                                    <div className="form-group mt-3">
+                                    <div className="mt-3 form-group">
                                         <input
                                             type="text"
                                             id="name"
@@ -91,9 +91,9 @@ const Contact = () => {
                                             placeholder="Nom complet"
                                             className="form-control"
                                         />
-                                        {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+                                        {errors.name && <p className="mt-1 text-sm text-red-500">{errors.name}</p>}
                                     </div>
-                                    <div className="form-group mt-3">
+                                    <div className="mt-3 form-group">
                                         <input
                                             type="email"
                                             id="email"
@@ -103,9 +103,9 @@ const Contact = () => {
                                             className="form-control"
                                             placeholder="Email"
                                         />
-                                        {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+                                        {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email}</p>}
                                     </div>
-                                    <div className="form-group mt-3">
+                                    <div className="mt-3 form-group">
                                         <input
                                             type="text"
                                             id="subject"
@@ -115,9 +115,9 @@ const Contact = () => {
                                             className="form-control"
                                             placeholder="Sujet"
                                         />
-                                        {errors.subject && <p className="text-red-500 text-sm mt-1">{errors.subject}</p>}
+                                        {errors.subject && <p className="mt-1 text-sm text-red-500">{errors.subject}</p>}
                                     </div>
-                                    <div className="form-group mt-3">
+                                    <div className="mt-3 form-group">
                                         <textarea
                                             id="message"
                                             name="message"
@@ -127,7 +127,7 @@ const Contact = () => {
                                             placeholder="Message"
                                             className="form-control"
                                         ></textarea>
-                                        {errors.message && <p className="text-red-500 text-sm mt-1">{errors.message}</p>}
+                                        {errors.message && <p className="mt-1 text-sm text-red-500">{errors.message}</p>}
                                     </div>
                                     <div className="text-center">
                                         <button type="submit">
